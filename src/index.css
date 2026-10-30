@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Anek Bangla', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-bengali: 'Anek Bangla', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Anek Bangla', monospace;
+}
+
+@layer base {
+  :root {
+    --font-sans: 'Anek Bangla', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-bengali: 'Anek Bangla', 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Anek Bangla', monospace;
+
+    /* 1. Brand Colors */
+    --lekho-primary: #164e3f;
+    --lekho-primary-hover: #123e32;
+    --lekho-primary-active: #0e3328;
+    --lekho-primary-fg: #ffffff;
+    --lekho-primary-mid: #1f8a5b;
+    --lekho-primary-tint: #e6f4ea;
+    --lekho-secondary: #e6f4ea;
+    --lekho-secondary-hover: #d1ebda;
+    --lekho-secondary-fg: #164e3f;
+    --lekho-accent: #1f8a5b;
+    --lekho-accent-fg: #ffffff;
+
+    /* 2. Surfaces & Layout */
+    --lekho-bg-page: #f8fafc;
+    --lekho-bg-card: #ffffff;
+    --lekho-bg-modal: #ffffff;
+    --lekho-bg-input: #f4f7f5;
+    --lekho-bg-subtle: #f4f7f5;
+    --lekho-bg-muted: #f4f7f5;
+    --lekho-text-primary: #0f172a;
+    --lekho-text-secondary: #475569;
+    --lekho-text-muted: #64748b;
+    --lekho-border: #e2e8f0;
+    --lekho-divider: #f1f5f9;
+    --lekho-ring: rgba(22, 78, 63, 0.22);
+
+    /* 3. Semantic Status Colors */
+    --lekho-success-bg: #e6f4ea;
+    --lekho-success-text: #164e3f;
+    --lekho-success-border: #a7f3d0;
+    --lekho-success-icon: #1f8a5b;
+
+    --lekho-warning-bg: #fffbeb;
+    --lekho-warning-text: #92400e;
+    --lekho-warning-border: #fde68a;
+    --lekho-warning-icon: #d97706;
+
+    --lekho-danger-bg: #fff1f2;
+    --lekho-danger-text: #be123c;
+    --lekho-danger-border: #fecdd3;
+    --lekho-danger-icon: #e11d48;
+
+    --lekho-info-bg: #f0fdf4;
+    --lekho-info-text: #164e3f;
+    --lekho-info-border: #bbf7d0;
+    --lekho-info-icon: #1f8a5b;
+
+    --lekho-neutral-bg: #f1f5f9;
+    --lekho-neutral-text: #334155;
+    --lekho-neutral-border: #cbd5e1;
+  }
+
+  html.dark {
+    --lekho-primary: #1f8a5b;
+    --lekho-primary-hover: #187049;
+    --lekho-primary-active: #164e3f;
+    --lekho-primary-fg: #ffffff;
+    --lekho-secondary: rgba(6, 78, 59, 0.45);
+    --lekho-secondary-hover: rgba(6, 78, 59, 0.65);
+    --lekho-secondary-fg: #6ee7b7;
+    --lekho-accent: #34d399;
+    --lekho-accent-fg: #09090b;
+
+    --lekho-bg-page: #09090b;
+    --lekho-bg-card: #18181b;
+    --lekho-bg-modal: #18181b;
+    --lekho-bg-input: #09090b;
+    --lekho-bg-subtle: #09090b;
+    --lekho-bg-muted: #09090b;
+    --lekho-text-primary: #f4f4f5;
+    --lekho-text-secondary: #a1a1aa;
+    --lekho-text-muted: #71717a;
+    --lekho-border: #27272a;
+    --lekho-divider: #27272a;
+    --lekho-ring: rgba(52, 211, 153, 0.25);
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100vw;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  /* Default theme behavior */
+  html:not(.dark) body {
+    background-color: var(--lekho-bg-page);
+    color: var(--lekho-text-primary);
+  }
+
+  html.dark body {
+    background-color: var(--lekho-bg-page);
+    color: var(--lekho-text-primary);
+  }
+}
+
+/* ============================================================================
+ * RESPONSIVE TYPOGRAPHY SCALE (Prevents oversized mobile text)
+ * ============================================================================ */
+.lekho-h1 {
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem); /* 18px mobile -> 24px desktop */
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lekho-h2 {
+  font-size: clamp(1rem, 1.8vw, 1.25rem); /* 16px mobile -> 20px desktop */
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.lekho-modal-title {
+  font-size: clamp(0.95rem, 1.6vw, 1.125rem); /* 15.2px mobile -> 18px desktop */
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.lekho-card-title {
+  font-size: clamp(0.8125rem, 1.3vw, 0.9375rem); /* 13px mobile -> 15px desktop */
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.lekho-body {
+  font-size: clamp(0.8125rem, 1.1vw, 0.875rem); /* 13px mobile -> 14px desktop */
+  line-height: 1.45;
+}
+
+.lekho-label {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.lekho-caption {
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1.35;
+}
+
+/* Mobile Typography Normalization (< 640px) so large display classes never overwhelm narrow screens */
+@media (max-width: 639px) {
+  .text-3xl:not(.keep-display-size) {
+    font-size: 1.375rem !important; /* 22px instead of 30px on mobile */
+    line-height: 1.25 !important;
+  }
+  .text-2xl:not(.keep-display-size) {
+    font-size: 1.2rem !important; /* 19.2px instead of 24px on mobile */
+    line-height: 1.28 !important;
+  }
+  .text-xl:not(.keep-display-size) {
+    font-size: 1.05rem !important; /* 16.8px instead of 20px on mobile */
+    line-height: 1.32 !important;
+  }
+}
+
+/* Standardized Responsive Modal Utilities */
+.lekho-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem;
+  overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+  .lekho-modal-backdrop {
+    padding: 1rem;
+  }
+}
+
+.lekho-modal-panel {
+  background-color: var(--lekho-bg-modal);
+  border: 1px solid var(--lekho-border);
+  border-radius: 1.25rem;
+  width: 100%;
+  max-height: min(90dvh, calc(100vh - 1.25rem));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Receipt, Job Sheet, Exchange Slip, and Z-Report Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt *,
+  #printable-exchange-slip, #printable-exchange-slip *,
+  #printable-job-sheet, #printable-job-sheet *,
+  #printable-customer-directory, #printable-customer-directory *,
+  #printable-customer-statement, #printable-customer-statement *,
+  #printable-z-report, #printable-z-report *,
+  #printable-reseller-memo, #printable-reseller-memo * {
+    visibility: visible;
+  }
+  #printable-receipt,
+  #printable-exchange-slip,
+  #printable-z-report,
+  #printable-reseller-memo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+    max-width: 100%;
+    margin: 0;
+    padding: 8px;
+    background: white !important;
+    color: black !important;
+  }
+  #printable-job-sheet,
+  #printable-customer-directory,
+  #printable-customer-statement {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    background: white;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Bengali font utility */
+.font-bengali {
+  font-family: var(--font-bengali);
+}
+
+.font-mono-code {
+  font-family: var(--font-mono);
+}
+
+/* Clean numeric inputs without browser arrow spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Smooth slide-in (right-to-left coming) and slide-out (left-to-right going) transitions for Store Settings Side Panel */
+aside[aria-label="Store Settings Side Panel"] {
+  will-change: translate, transform, width;
+  transition: translate 320ms cubic-bezier(0.16, 1, 0.3, 1), transform 320ms cubic-bezier(0.16, 1, 0.3, 1), width 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+
+
