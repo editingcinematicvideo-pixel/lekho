@@ -1,0 +1,239 @@
+{
+  "entities": {
+    "PlatformAdmin": {
+      "title": "PlatformAdmin",
+      "description": "Server/Console-managed registry of Platform Super Admins. Never writable by clients.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID of the Super Admin" },
+        "email": { "type": "string", "format": "email", "description": "Verified email address" },
+        "role": { "type": "string", "enum": ["super_admin"], "description": "Must be super_admin" },
+        "active": { "type": "boolean", "description": "Whether super admin privileges are active" },
+        "grantedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "role", "active"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user profile linked to a specific tenant shop and role.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["shop_owner", "manager", "salesman"] },
+        "shopId": { "type": "string" },
+        "shopName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "name", "role", "shopId", "createdAt"]
+    },
+    "TenantShop": {
+      "title": "TenantShop",
+      "description": "Multi-tenant retail store configuration, ownership, and RBAC membership map.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "ownerEmail": { "type": "string", "format": "email" },
+        "ownerPhone": { "type": "string" },
+        "category": { "type": "string", "enum": ["jersey", "clothing", "hybrid"] },
+        "shopCategory": { "type": "string", "enum": ["CLOTHING", "SPORTS WEAR"] },
+        "memberUids": { "type": "array", "items": { "type": "string" } },
+        "memberRoles": { "type": "object" },
+        "accountStatus": { "type": "string", "enum": ["active", "pending_verification", "disabled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "ownerUid", "ownerName", "ownerPhone", "category", "memberUids", "memberRoles", "createdAt"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Shop-isolated product and variant stock record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "mrp": { "type": "number" },
+        "bottomPrice": { "type": "number" },
+        "lotCostLandingPrice": { "type": "number" },
+        "totalStock": { "type": "number" }
+      },
+      "required": ["id", "shopId", "name", "mrp", "totalStock"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Shop-isolated POS sales invoice and payment record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "invoiceNo": { "type": "string" },
+        "shopId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "total": { "type": "number" },
+        "advancePaid": { "type": "number" },
+        "dueAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed", "partial_due", "returned"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "invoiceNo", "shopId", "total", "status", "createdAt"]
+    },
+    "ExpenseRecord": {
+      "title": "ExpenseRecord",
+      "description": "Shop-isolated daily expense entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentDrawer": { "type": "string" },
+        "note": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId", "category", "amount", "createdAt"]
+    },
+    "StaffMemberDoc": {
+      "title": "StaffMemberDoc",
+      "description": "Shop-isolated staff member and permission record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "pinHash": { "type": "string" },
+        "pinSalt": { "type": "string" },
+        "hasPinSet": { "type": "boolean" },
+        "role": { "type": "string", "enum": ["owner", "manager", "salesman"] },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "shopId", "name", "role", "active"]
+    },
+    "PrivateCostVault": {
+      "title": "PrivateCostVault",
+      "description": "Owner-only confidential buying price vault for products, variants, and categories.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "productCosts": { "type": "object" },
+        "categoryCosts": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId"]
+    },
+    "ShopCustomerProfile": {
+      "title": "ShopCustomerProfile",
+      "description": "Strictly shop-isolated customer record and loyalty balance keyed by shopId_normalizedPhone.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "phone": { "type": "string" },
+        "name": { "type": "string" },
+        "loyaltyPoints": { "type": "number" },
+        "lifetimePointsEarned": { "type": "number" },
+        "lifetimePointsRedeemed": { "type": "number" },
+        "doNotContact": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId", "phone", "name", "loyaltyPoints"]
+    },
+    "LoyaltyTransaction": {
+      "title": "LoyaltyTransaction",
+      "description": "Shop-isolated loyalty point earn, redeem, and reversal ledger entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerName": { "type": "string" },
+        "invoiceId": { "type": "string" },
+        "type": { "type": "string", "enum": ["earn", "redeem", "reverse", "manual_adjust"] },
+        "points": { "type": "number" },
+        "balanceAfter": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId", "customerId", "customerPhone", "type", "points", "balanceAfter", "timestamp"]
+    },
+    "StockAdjustmentRecord": {
+      "title": "StockAdjustmentRecord",
+      "description": "Shop-isolated inventory variant stock correction and movement audit entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "sku": { "type": "string" },
+        "size": { "type": "string" },
+        "color": { "type": "string" },
+        "previousQty": { "type": "number" },
+        "newQty": { "type": "number" },
+        "difference": { "type": "number" },
+        "movementType": { "type": "string", "enum": ["manual_correction", "sale", "return", "restock", "initial_entry"] },
+        "reason": { "type": "string" },
+        "responsibleUser": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId", "productId", "size", "previousQty", "newQty", "difference", "movementType", "reason", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/platform_admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/PlatformAdmin" },
+      "description": "Console-only Super Admin registry. Client write is strictly forbidden."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Authenticated user profiles mapped to their shopId and role."
+    },
+    "/shops/{shopId}": {
+      "schema": { "$ref": "#/entities/TenantShop" },
+      "description": "Tenant shop profile, settings, and member access control map."
+    },
+    "/shops/{shopId}/products/{productId}": {
+      "schema": { "$ref": "#/entities/InventoryItem" },
+      "description": "Tenant-isolated inventory items."
+    },
+    "/shops/{shopId}/private_costs/{costDocId}": {
+      "schema": { "$ref": "#/entities/PrivateCostVault" },
+      "description": "Owner-only confidential buying price records."
+    },
+    "/shops/{shopId}/invoices/{invoiceId}": {
+      "schema": { "$ref": "#/entities/Invoice" },
+      "description": "Tenant-isolated sales invoices."
+    },
+    "/shops/{shopId}/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/ExpenseRecord" },
+      "description": "Tenant-isolated expense records."
+    },
+    "/shops/{shopId}/staff/{staffId}": {
+      "schema": { "$ref": "#/entities/StaffMemberDoc" },
+      "description": "Tenant-isolated staff members."
+    },
+    "/shops/{shopId}/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/ShopCustomerProfile" },
+      "description": "Tenant-isolated customer profiles and loyalty balances."
+    },
+    "/shops/{shopId}/loyalty_transactions/{txId}": {
+      "schema": { "$ref": "#/entities/LoyaltyTransaction" },
+      "description": "Tenant-isolated loyalty point transaction ledger."
+    },
+    "/shops/{shopId}/stock_adjustments/{adjId}": {
+      "schema": { "$ref": "#/entities/StockAdjustmentRecord" },
+      "description": "Tenant-isolated stock correction and movement ledger."
+    }
+  }
+}

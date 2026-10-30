@@ -1,0 +1,6 @@
+{
+  "name": "LEKHO - Retail POS & Inventory SaaS",
+  "description": "Multi-tenant offline-first retail SaaS engineered for shopping mall stores in Bangladesh, with specialized workflows for Jersey & Sports, Clothing & Apparel, bKash/Nagad verification, and multi-drawer accounting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
